@@ -44,7 +44,7 @@ bot.command('quit', async (ctx) => {
     const chatMember = await ctx.telegram.getChatMember(chatID, uid);
     if (AdminCache.isAdmin(chatMember)) {
         ctx.telegram.leaveChat(ctx.message.chat.id);
-        ctx.leaveChat();
+        // ctx.leaveChat();
     } else {
         ctx.reply(`🛑 Sir stop sir! yes you ${ctx.from.first_name}, this is my no no square 🛑 `)
     }
@@ -78,9 +78,8 @@ bot.on('text', (ctx) => {
 });
 
 bot.launch();
-// process.once('SIGINT', () => bot.stop('SIGINT'));
+process.once('SIGINT', () => bot.stop('SIGINT'));
 // process.once('SIGTERM', () => bot.stop('SIGTERM'));
-
 app.get('/', (req, res) => {
     res.send('waddap');
 });
