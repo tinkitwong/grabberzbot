@@ -46,15 +46,15 @@ bot.command('quit', async (ctx) => {
 bot.command('scheduler', async (ctx) => {
     ctx.reply('Enter 3 dates when you are free in this format: STARTIME -> ENDTIME\nFORMAT: MM/DD/YYYY H:M AM/PM');
 });
-bot.on('message', async (ctx, evt) => {
+bot.on('message', async (ctx, event) => {
     // Grab dates of when each user is free
     // Grab time of when each user is free on that date
     // Logic to show overlapping time
-    const uid = ctx.message.from.id;
-    const chatID = ctx.message.chat.id;
-    const chatMember = await ctx.telegram.getChatMember(chatID, uid);
-    console.log('testsets');
-    console.log(evt);
+    // const uid = ctx.message.from.id;
+    // const chatID = ctx.message.chat.id;
+    // const chatMember = await ctx.telegram.getChatMember(chatID, uid);
+    // console.log('testsets')
+    // console.log(evt)
 });
 bot.on('text', (ctx) => {
     ctx.reply('You choose the ' +
