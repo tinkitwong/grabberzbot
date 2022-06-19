@@ -10,8 +10,6 @@ const bot: Telegraf<Context<Update>> = new Telegraf(process.env.BOT_TOKEN as str
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-
-
 bot.start(async (ctx) => {
     ctx.reply('Hello ' + ctx.from.first_name + '!');
 
@@ -21,7 +19,7 @@ bot.start(async (ctx) => {
 
     const chatAdmins = await ctx.telegram.getChatAdministrators(chatID);
     const chatMember = await ctx.telegram.getChatMember(chatID, uid);
-
+    console.log(chatMember.status)
     if (!(chatMember.status.toUpperCase() in PRVILEDGED_USERS)) { // not admin
         ctx.reply(`Don't be naughty ${ctx.from.first_name}, you ain't no admin!`); // TODO: Send gif instead.    
     }
