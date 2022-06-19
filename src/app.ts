@@ -1,10 +1,16 @@
 import { Context, Telegraf, Markup } from 'telegraf';
 import { Update } from 'typegram';
 import { lessThanOneHourAgo, AdminCache, PRVILEDGED_USERS } from './utilities';
+import express from 'express';
 
 import dotenv from 'dotenv';
 dotenv.config();
 const bot: Telegraf<Context<Update>> = new Telegraf(process.env.BOT_TOKEN as string);
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+
 
 bot.start(async (ctx) => {
     ctx.reply('Hello ' + ctx.from.first_name + '!');
@@ -47,9 +53,9 @@ bot.command('quit', async (ctx) => {
 });
 
 bot.command('scheduler', async (ctx) => {
-    
+
     ctx.reply(
-        'Enter 3 dates when you are free in this format: STARTIME -> ENDTIME\nFORMAT: MM/DD/YYYY H:M AM/PM' 
+        'Enter 3 dates when you are free in this format: STARTIME -> ENDTIME\nFORMAT: MM/DD/YYYY H:M AM/PM'
     );
 });
 
@@ -76,3 +82,11 @@ bot.on('text', (ctx) => {
 bot.launch();
 process.once('SIGINT', () => bot.stop('SIGINT'));
 process.once('SIGTERM', () => bot.stop('SIGTERM'));
+
+app.get('/', (req, res) => {
+    res.send('waddap');
+});
+
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+});

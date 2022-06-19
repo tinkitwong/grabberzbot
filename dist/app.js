@@ -5,9 +5,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const telegraf_1 = require("telegraf");
 const utilities_1 = require("./utilities");
+const express_1 = __importDefault(require("express"));
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 const bot = new telegraf_1.Telegraf(process.env.BOT_TOKEN);
+const app = (0, express_1.default)();
+const PORT = process.env.PORT || 3000;
 bot.start(async (ctx) => {
     ctx.reply('Hello ' + ctx.from.first_name + '!');
     const chatID = ctx.message.chat.id;
@@ -64,4 +67,10 @@ bot.on('text', (ctx) => {
 bot.launch();
 process.once('SIGINT', () => bot.stop('SIGINT'));
 process.once('SIGTERM', () => bot.stop('SIGTERM'));
+app.get('/', (req, res) => {
+    res.send('waddap');
+});
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+});
 //# sourceMappingURL=app.js.map
