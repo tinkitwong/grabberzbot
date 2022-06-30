@@ -2,32 +2,30 @@ import { Context, Telegraf, Markup } from 'telegraf';
 import { Update } from 'typegram';
 import { AdminCache, PRVILEDGED_USERS } from '../utilities';
 
-export class BigDaddyChadBot {
+export class ChadBot {
     protected chadBot: Telegraf<Context<Update>>;
-    protected chadIDs: number[];
+    protected chatIDs: number[];
+    protected name: string | null = null;
 
     constructor() {
-        this.chadBot = new Telegraf(process.env.BDADDY_BOT_TOKEN as string);
-        this.chadIDs = [];
-
-        // Cleanup
-        process.once('SIGINT', () => this.chadBot.stop('SIGINT'));
+        this.chadBot = new Telegraf(process.env.BOT_TOKEN as string);
+        this.chatIDs = [];
         this.start();
     };
 
-    public getBotName(): string {
-        return 'BigDaddyChadBot';
+    public getName = async () => {
+        this.name = this.name ?? (await this.chadBot.telegram.getMe()).username;
+        return this.name;
     };
 
-    public start() {
+    public async start() {
+        await this.getName();
+        this.chadBot.help(ctx => ctx.reply('say hi'));
+        this.chadBot.hears('hi', ctx => ctx.reply(`hello ${ctx.from.username}`));
         this.chadBot.start((ctx) => {
-            const uid = ctx.message.from.id;
-            const chatID = ctx.message.chat.id;
-            console.log('test')
-            console.log(uid)
-            console.log(chatID)
-            ctx.reply('helo')
+            ctx.reply(`${this.name} started`);
         });
+        this.chadBot.launch();
     };
 
     protected leave() {
@@ -45,6 +43,6 @@ export class BigDaddyChadBot {
 
     /** Adds Chat Group ID to class var */
     protected addChatGrp(chatID: number) {
-        this.chadIDs.push(chatID);
+        this.chatIDs.push(chatID);
     };
 }

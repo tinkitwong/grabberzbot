@@ -1,1 +1,1 @@
-export * from './bigDaddyChadBot';
+export * from './ChadBot';
