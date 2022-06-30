@@ -8,7 +8,7 @@ export class ChadBot {
     private name: string | null = null;
 
     constructor() {
-        this.chadBot = new Telegraf(process.env.BOT_TOKEN as string);
+        this.chadBot = new Telegraf(process.env.ENV === 'dev' ? process.env.BOT_TOKEN_DEV as string : process.env.BOT_TOKEN as string);
         this.chatIDs = [];
         this.init();
     };
@@ -22,6 +22,7 @@ export class ChadBot {
             this.chatIDs.find(id => id == chatId) ?? this.registerChatGroups(chatId)
             ctx.reply(`${this.name} started`);
         });
+        
         this.chadBot.launch();
     };
     

@@ -1,7 +1,6 @@
 import express from 'express';
 import dotenv from 'dotenv';
-import { Telegraf } from 'telegraf';
-import { ChadBot } from './chats';
+import { ChadBot } from './bot/ChadBot';
 
 dotenv.config();
 
