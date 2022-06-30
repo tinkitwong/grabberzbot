@@ -17,6 +17,7 @@ class ChadBot {
             return this.name;
         };
         this.chadBot = new telegraf_1.Telegraf(process.env.ENV === 'dev' ? process.env.BOT_TOKEN_DEV : process.env.BOT_TOKEN);
+        console.log(process.env.ENV === 'dev' ? process.env.BOT_TOKEN_DEV : process.env.BOT_TOKEN);
         this.chatIDs = [];
         this.init();
     }

@@ -9,6 +9,7 @@ export class ChadBot {
 
     constructor() {
         this.chadBot = new Telegraf(process.env.ENV === 'dev' ? process.env.BOT_TOKEN_DEV as string : process.env.BOT_TOKEN as string);
+        console.log(process.env.ENV === 'dev' ? process.env.BOT_TOKEN_DEV as string : process.env.BOT_TOKEN as string)
         this.chatIDs = [];
         this.init();
     };
