@@ -12,17 +12,20 @@ class ChadBot {
         };
         this.chadBot = new telegraf_1.Telegraf(process.env.BOT_TOKEN);
         this.chatIDs = [];
-        this.start();
+        this.init();
     }
     ;
-    async start() {
+    async init() {
         await this.getName();
         this.chadBot.help(ctx => ctx.reply('say hi'));
         this.chadBot.hears('hi', ctx => ctx.reply(`hello ${ctx.from.username}`));
         this.chadBot.start((ctx) => {
+            const chatId = ctx.message.chat.id;
+            this.chatIDs.find(id => id == chatId) ?? this.registerChatGroups(chatId);
             ctx.reply(`${this.name} started`);
         });
         this.chadBot.launch();
+        console.log(this.chatIDs);
     }
     ;
     leave() {
@@ -40,8 +43,8 @@ class ChadBot {
     }
     ;
     /** Adds Chat Group ID to class var */
-    addChatGrp(chatID) {
-        this.chatIDs.push(chatID);
+    registerChatGroups(chatId) {
+        this.chatIDs.push(chatId);
     }
     ;
 }

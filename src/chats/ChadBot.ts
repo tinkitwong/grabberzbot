@@ -10,7 +10,7 @@ export class ChadBot {
     constructor() {
         this.chadBot = new Telegraf(process.env.BOT_TOKEN as string);
         this.chatIDs = [];
-        this.start();
+        this.init();
     };
 
     public getName = async () => {
@@ -18,11 +18,13 @@ export class ChadBot {
         return this.name;
     };
 
-    public async start() {
+    private async init() {
         await this.getName();
         this.chadBot.help(ctx => ctx.reply('say hi'));
         this.chadBot.hears('hi', ctx => ctx.reply(`hello ${ctx.from.username}`));
         this.chadBot.start((ctx) => {
+            const chatId = ctx.message.chat.id;
+            this.chatIDs.find(id => id == chatId) ?? this.registerChatGroups(chatId)
             ctx.reply(`${this.name} started`);
         });
         this.chadBot.launch();
@@ -42,7 +44,7 @@ export class ChadBot {
     };
 
     /** Adds Chat Group ID to class var */
-    protected addChatGrp(chatID: number) {
-        this.chatIDs.push(chatID);
+    public registerChatGroups(chatId:number) {
+        this.chatIDs.push(chatId);
     };
 }
