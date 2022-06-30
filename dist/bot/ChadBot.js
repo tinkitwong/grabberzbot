@@ -5,6 +5,8 @@ const telegraf_1 = require("telegraf");
 const utilities_1 = require("../utilities");
 class ChadBot {
     constructor() {
+        this.chadBot = null;
+        this.chatIDs = [];
         this.name = null;
         /** get reminders from the corresponding chats */
         this.getReminder = () => {
@@ -16,13 +18,17 @@ class ChadBot {
             this.name = this.name ?? (await this.chadBot.telegram.getMe()).username;
             return this.name;
         };
-        this.chadBot = new telegraf_1.Telegraf(process.env.ENV === 'dev' ? process.env.BOT_TOKEN_DEV : process.env.BOT_TOKEN);
-        console.log(process.env.ENV === 'dev' ? process.env.BOT_TOKEN_DEV : process.env.BOT_TOKEN);
-        this.chatIDs = [];
         this.init();
     }
     ;
     async init() {
+        if (process.env.ENV === 'dev') {
+            this.chadBot = new telegraf_1.Telegraf(process.env.BOT_TOKEN_DEV);
+        }
+        else {
+            this.chadBot = new telegraf_1.Telegraf(process.env.BOT_TOKEN);
+            // this.chadBot.telegram.setWebhook(`${process.env.HEROKU_DOMAIN}:443/bot${process.env.BOT_TOKEN}`)
+        }
         await this.getName();
         this.chadBot.help(ctx => ctx.reply('say hi'));
         this.chadBot.hears('hi', ctx => ctx.reply(`hello ${ctx.from.username}`));
@@ -31,11 +37,16 @@ class ChadBot {
             this.chatIDs.find(id => id == chatId) ?? this.registerChatGroups(chatId);
             ctx.reply(`${this.name} started`);
         });
-        this.chadBot.launch();
+        this.chadBot.launch({
+            webhook: {
+                domain: process.env.HEROKU_DOMAIN,
+            }
+        }).then(() => console.log(`${this.name} is running`))
+            .catch(error => console.log(`ERROR: ${error}`));
     }
     ;
     leave() {
-        this.chadBot.command('leave', async (ctx) => {
+        this.chadBot?.command('leave', async (ctx) => {
             const uid = ctx.message.from.id;
             const chatID = ctx.message.chat.id;
             const chatMember = await ctx.telegram.getChatMember(chatID, uid);

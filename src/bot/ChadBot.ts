@@ -3,18 +3,22 @@ import { Update } from 'typegram';
 import { AdminCache, PRVILEDGED_USERS } from '../utilities';
 
 export class ChadBot {
-    private chadBot: Telegraf<Context<Update>>;
-    private chatIDs: number[];
+    private chadBot: Telegraf<Context<Update>> | null = null;
+    private chatIDs: number[] = [];
     private name: string | null = null;
 
     constructor() {
-        this.chadBot = new Telegraf(process.env.ENV === 'dev' ? process.env.BOT_TOKEN_DEV as string : process.env.BOT_TOKEN as string);
-        console.log(process.env.ENV === 'dev' ? process.env.BOT_TOKEN_DEV as string : process.env.BOT_TOKEN as string)
-        this.chatIDs = [];
         this.init();
     };
     
     private async init() {
+        if (process.env.ENV === 'dev') { 
+            this.chadBot = new Telegraf(process.env.BOT_TOKEN_DEV as string);
+            }
+            else{
+                this.chadBot = new Telegraf(process.env.BOT_TOKEN as string);
+                // this.chadBot.telegram.setWebhook(`${process.env.HEROKU_DOMAIN}:443/bot${process.env.BOT_TOKEN}`)
+            }
         await this.getName();
         this.chadBot.help(ctx => ctx.reply('say hi'));
         this.chadBot.hears('hi', ctx => ctx.reply(`hello ${ctx.from.username}`));
@@ -24,7 +28,12 @@ export class ChadBot {
             ctx.reply(`${this.name} started`);
         });
         
-        this.chadBot.launch();
+        this.chadBot.launch({
+            webhook:{
+                domain: process.env.HEROKU_DOMAIN,
+            }
+        }).then(() => console.log(`${this.name} is running`))
+        .catch(error => console.log(`ERROR: ${error}`));
     };
     
     /** get reminders from the corresponding chats */
@@ -38,12 +47,12 @@ export class ChadBot {
     }
 
     public getName = async () => {
-        this.name = this.name ?? (await this.chadBot.telegram.getMe()).username;
+        this.name = this.name ?? (await this.chadBot!.telegram.getMe()).username;
         return this.name;
     };
 
     protected leave() {
-        this.chadBot.command('leave', async (ctx) => {
+        this.chadBot?.command('leave', async (ctx) => {
             const uid = ctx.message.from.id;
             const chatID = ctx.message.chat.id;
             const chatMember = await ctx.telegram.getChatMember(chatID, uid);
