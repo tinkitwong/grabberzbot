@@ -13,11 +13,10 @@ export class ChadBot {
     
     private async init() {
         if (process.env.ENV === 'dev') { 
-            this.chadBot = new Telegraf(process.env.BOT_TOKEN_DEV as string);
+                this.chadBot = new Telegraf(process.env.BOT_TOKEN_DEV as string);
             }
             else{
                 this.chadBot = new Telegraf(process.env.BOT_TOKEN as string);
-                // this.chadBot.telegram.setWebhook(`${process.env.HEROKU_DOMAIN}:443/bot${process.env.BOT_TOKEN}`)
             }
         await this.getName();
         this.chadBot.help(ctx => ctx.reply('say hi'));
@@ -31,6 +30,8 @@ export class ChadBot {
         this.chadBot.launch({
             webhook:{
                 domain: process.env.HEROKU_DOMAIN,
+                hookPath: `/${process.env.MOJOJOJO_HOOK}`,
+                port: process.env.PORT as unknown as number
             }
         }).then(() => console.log(`${this.name} is running`))
         .catch(error => console.log(`ERROR: ${error}`));
