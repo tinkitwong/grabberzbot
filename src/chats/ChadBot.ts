@@ -3,21 +3,16 @@ import { Update } from 'typegram';
 import { AdminCache, PRVILEDGED_USERS } from '../utilities';
 
 export class ChadBot {
-    protected chadBot: Telegraf<Context<Update>>;
-    protected chatIDs: number[];
-    protected name: string | null = null;
+    private chadBot: Telegraf<Context<Update>>;
+    private chatIDs: number[];
+    private name: string | null = null;
 
     constructor() {
         this.chadBot = new Telegraf(process.env.BOT_TOKEN as string);
         this.chatIDs = [];
         this.init();
     };
-
-    public getName = async () => {
-        this.name = this.name ?? (await this.chadBot.telegram.getMe()).username;
-        return this.name;
-    };
-
+    
     private async init() {
         await this.getName();
         this.chadBot.help(ctx => ctx.reply('say hi'));
@@ -28,6 +23,21 @@ export class ChadBot {
             ctx.reply(`${this.name} started`);
         });
         this.chadBot.launch();
+    };
+    
+    /** get reminders from the corresponding chats */
+    public getReminder = () => {
+
+    }
+
+    /** set reminder into chat db */
+    public setReminder = () => {
+
+    }
+
+    public getName = async () => {
+        this.name = this.name ?? (await this.chadBot.telegram.getMe()).username;
+        return this.name;
     };
 
     protected leave() {
