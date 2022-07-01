@@ -41,7 +41,7 @@ class ChadBot {
             webhook: {
                 domain: process.env.HEROKU_DOMAIN,
                 hookPath: `/${process.env.MOJOJOJO_HOOK}`,
-                port: process.env.PORT
+                port: process.env.PORT_BOT
             }
         }).then(() => console.log(`${this.name} is running`))
             .catch(error => console.log(`ERROR: ${error}`));
