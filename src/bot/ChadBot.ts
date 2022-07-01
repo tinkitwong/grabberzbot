@@ -18,6 +18,9 @@ export class ChadBot {
             else{
                 this.chadBot = new Telegraf(process.env.BOT_TOKEN as string);
             }
+        
+            this.chadBot.use(Telegraf.log());
+            
         await this.getName();
         this.chadBot.help(ctx => ctx.reply('say hi'));
         this.chadBot.hears('hi', ctx => ctx.reply(`hello ${ctx.from.username}`));
@@ -31,7 +34,7 @@ export class ChadBot {
             webhook:{
                 domain: process.env.HEROKU_DOMAIN,
                 hookPath: `/${process.env.MOJOJOJO_HOOK}`,
-                // port: process.env.PORT as unknown as number
+                port: process.env.PORT as unknown as number
             }
         }).then(() => console.log(`${this.name} is running`))
         .catch(error => console.log(`ERROR: ${error}`));

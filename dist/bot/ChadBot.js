@@ -27,8 +27,8 @@ class ChadBot {
         }
         else {
             this.chadBot = new telegraf_1.Telegraf(process.env.BOT_TOKEN);
-            // this.chadBot.telegram.setWebhook(`${process.env.HEROKU_DOMAIN}:443/bot${process.env.BOT_TOKEN}`)
         }
+        this.chadBot.use(telegraf_1.Telegraf.log());
         await this.getName();
         this.chadBot.help(ctx => ctx.reply('say hi'));
         this.chadBot.hears('hi', ctx => ctx.reply(`hello ${ctx.from.username}`));

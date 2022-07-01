@@ -11,3 +11,5 @@ Incoming Features
 | 1           | Reminder for events |
 | 2           | Mini Game           |
 | 3           | In bot web App      |
+
+heroku ps:scale web=0 --app=mojojojoz
