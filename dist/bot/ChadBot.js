@@ -1,13 +1,18 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ChadBot = void 0;
-const telegraf_1 = require("telegraf");
-const utilities_1 = require("../utilities");
+const node_telegram_bot_api_1 = __importDefault(require("node-telegram-bot-api"));
 class ChadBot {
     constructor() {
         this.chadBot = null;
         this.chatIDs = [];
         this.name = null;
+        this.getBot = () => {
+            return this.chadBot;
+        };
         /** get reminders from the corresponding chats */
         this.getReminder = () => {
         };
@@ -15,55 +20,32 @@ class ChadBot {
         this.setReminder = () => {
         };
         this.getName = async () => {
-            this.name = this.name ?? (await this.chadBot.telegram.getMe()).username;
-            return this.name;
         };
+        this.leave = () => { };
+        /** Adds Chat Group ID to class var */
+        this.registerChat = () => { };
         this.init();
     }
     ;
     async init() {
+        const options = {
+            webHook: {
+                port: process.env.PORT,
+            }
+        };
         if (process.env.ENV === 'dev') {
-            this.chadBot = new telegraf_1.Telegraf(process.env.BOT_TOKEN_DEV);
+            this.chadBot = new node_telegram_bot_api_1.default(process.env.BOT_TOKEN_DEV);
+            console.log('testing');
+            this.chadBot.on('message', (msg) => {
+                console.log('test');
+                console.log(this.chadBot);
+                this.chadBot?.sendMessage(msg.chat.id, 'received msg');
+            });
         }
         else {
-            this.chadBot = new telegraf_1.Telegraf(process.env.BOT_TOKEN);
+            this.chadBot = new node_telegram_bot_api_1.default(process.env.BOT_TOKEN, options);
+            this.chadBot.setWebHook(`https://mojojojoz.herokuapp.com:443/bot/${process.env.BOT_TOKEN}`);
         }
-        this.chadBot.use(telegraf_1.Telegraf.log());
-        await this.getName();
-        this.chadBot.help(ctx => ctx.reply('say hi'));
-        this.chadBot.hears('hi', ctx => ctx.reply(`hello ${ctx.from.username}`));
-        this.chadBot.start((ctx) => {
-            const chatId = ctx.message.chat.id;
-            this.chatIDs.find(id => id == chatId) ?? this.registerChatGroups(chatId);
-            ctx.reply(`${this.name} started`);
-        });
-        this.chadBot.launch({
-            webhook: {
-                domain: process.env.HEROKU_DOMAIN,
-                hookPath: `/${process.env.MOJOJOJO_HOOK}`,
-                port: process.env.PORT_BOT
-            }
-        }).then(() => console.log(`${this.name} is running`))
-            .catch(error => console.log(`ERROR: ${error}`));
-    }
-    ;
-    leave() {
-        this.chadBot?.command('leave', async (ctx) => {
-            const uid = ctx.message.from.id;
-            const chatID = ctx.message.chat.id;
-            const chatMember = await ctx.telegram.getChatMember(chatID, uid);
-            if (utilities_1.AdminCache.isAdmin(chatMember)) {
-                ctx.telegram.leaveChat(ctx.message.chat.id);
-            }
-            else {
-                ctx.reply(`🛑 Sir stop sir! yes you ${ctx.from.first_name}, this is my no no square 🛑 `);
-            }
-        });
-    }
-    ;
-    /** Adds Chat Group ID to class var */
-    registerChatGroups(chatId) {
-        this.chatIDs.push(chatId);
     }
     ;
 }
