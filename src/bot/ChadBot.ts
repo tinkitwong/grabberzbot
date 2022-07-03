@@ -20,10 +20,14 @@ export class ChadBot {
                 //     this.chadBot?.sendMessage(msg.chat.id, 'received msg')
                 // });
             }
-            else{
-                console.log('inside init()');
-                this.chadBot = new TelegramBot(process.env.BOT_TOKEN as string);
+            else {
+                this.chadBot = new TelegramBot(process.env.BOT_TOKEN as string, {
+                    webHook: {
+                        port: process.env.PORT as unknown as number
+                    }
+                });
                 this.chadBot.setWebHook(`https://mojojojoz.herokuapp.com:443/bot/${process.env.BOT_TOKEN}`);
+
             }
     
     };

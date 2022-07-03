@@ -5,27 +5,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
-const node_telegram_bot_api_1 = __importDefault(require("node-telegram-bot-api"));
+// import express from 'express';
+const ChadBot_1 = require("./bot/ChadBot");
 const TOKEN = process.env.BOT_TOKEN;
 const port = process.env.PORT;
-// const bot: TelegramBot = new ChadBot().getBot()!;
-const bot = new node_telegram_bot_api_1.default(process.env.BOT_TOKEN, {
-    webHook: {
-        port: port
-    }
-});
-bot.setWebHook(`https://mojojojoz.herokuapp.com:443/bot/${process.env.BOT_TOKEN}`);
-// const app = express();
-// parse the updates to JSON
-// app.use(express.json());
-// We are receiving updates at the route below!
-// app.post(`/bot${TOKEN}`, (req, res) => {
-//   bot.processUpdate(req.body);
-//   res.sendStatus(200);
+const bot = new ChadBot_1.ChadBot().getBot();
+// const bot = new TelegramBot(process.env.BOT_TOKEN as string, {
+//   webHook: {
+//     port: port as unknown as number
+//   }
 // });
-// app.listen(port, () => {
-//   console.log(`Express server is listening on ${port}`);
-// });
+// bot.setWebHook(`https://mojojojoz.herokuapp.com:443/bot/${process.env.BOT_TOKEN}`);
 // Just to ping!
 bot.on('message', msg => {
     bot.sendMessage(msg.chat.id, 'I am alive!');

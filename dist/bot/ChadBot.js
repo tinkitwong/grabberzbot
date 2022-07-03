@@ -38,8 +38,11 @@ class ChadBot {
             // });
         }
         else {
-            console.log('inside init()');
-            this.chadBot = new node_telegram_bot_api_1.default(process.env.BOT_TOKEN);
+            this.chadBot = new node_telegram_bot_api_1.default(process.env.BOT_TOKEN, {
+                webHook: {
+                    port: process.env.PORT
+                }
+            });
             this.chadBot.setWebHook(`https://mojojojoz.herokuapp.com:443/bot/${process.env.BOT_TOKEN}`);
         }
     }
