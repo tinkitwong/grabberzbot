@@ -8,7 +8,7 @@ dotenv_1.default.config();
 const express_1 = __importDefault(require("express"));
 const node_telegram_bot_api_1 = __importDefault(require("node-telegram-bot-api"));
 const TOKEN = process.env.BOT_TOKEN;
-const url = `https://mojojojoz.herokuapp.com:443/bot/${process.env.BOT_TOKEN}`;
+const url = `https://mojojojoz.herokuapp.com:443`;
 const port = process.env.PORT;
 // No need to pass any parameters as we will handle the updates with Express
 const bot = new node_telegram_bot_api_1.default(TOKEN);
