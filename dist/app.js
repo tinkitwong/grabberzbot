@@ -9,7 +9,7 @@ const node_telegram_bot_api_1 = __importDefault(require("node-telegram-bot-api")
 const TOKEN = process.env.BOT_TOKEN;
 const port = process.env.PORT;
 // const bot: TelegramBot = new ChadBot().getBot()!;
-const bot = new node_telegram_bot_api_1.default(process.env.BOT_TOKEN_DEV, {
+const bot = new node_telegram_bot_api_1.default(process.env.BOT_TOKEN, {
     webHook: {
         port: port
     }

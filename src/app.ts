@@ -8,7 +8,7 @@ const TOKEN = process.env.BOT_TOKEN
 const port = process.env.PORT;
 
 // const bot: TelegramBot = new ChadBot().getBot()!;
-const bot = new TelegramBot(process.env.BOT_TOKEN_DEV as string, {
+const bot = new TelegramBot(process.env.BOT_TOKEN as string, {
   webHook: {
     port: port as unknown as number
   }
