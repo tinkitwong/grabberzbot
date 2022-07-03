@@ -35,7 +35,6 @@ class ChadBot {
         };
         if (process.env.ENV === 'dev') {
             this.chadBot = new node_telegram_bot_api_1.default(process.env.BOT_TOKEN_DEV);
-            console.log('testing');
             this.chadBot.on('message', (msg) => {
                 console.log('test');
                 console.log(this.chadBot);

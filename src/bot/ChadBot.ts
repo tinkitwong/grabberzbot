@@ -18,7 +18,6 @@ export class ChadBot {
         }
         if (process.env.ENV === 'dev') { 
                 this.chadBot = new TelegramBot(process.env.BOT_TOKEN_DEV as string);
-                console.log('testing')
                 this.chadBot.on('message', (msg) => {
                     console.log('test');
                     console.log(this.chadBot)
