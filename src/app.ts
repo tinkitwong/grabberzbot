@@ -7,10 +7,11 @@ import TelegramBot from 'node-telegram-bot-api';
 const TOKEN = process.env.BOT_TOKEN
 const port = process.env.PORT;
 
+const bot: TelegramBot = new ChadBot().getBot()!;
+
 const app = express();
 // parse the updates to JSON
 app.use(express.json());
-const bot: TelegramBot = new ChadBot().getBot()!;
 
 // We are receiving updates at the route below!
 app.post(`/bot${TOKEN}`, (req, res) => {

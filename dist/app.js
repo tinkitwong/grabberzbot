@@ -9,10 +9,10 @@ const express_1 = __importDefault(require("express"));
 const ChadBot_1 = require("./bot/ChadBot");
 const TOKEN = process.env.BOT_TOKEN;
 const port = process.env.PORT;
+const bot = new ChadBot_1.ChadBot().getBot();
 const app = (0, express_1.default)();
 // parse the updates to JSON
 app.use(express_1.default.json());
-const bot = new ChadBot_1.ChadBot().getBot();
 // We are receiving updates at the route below!
 app.post(`/bot${TOKEN}`, (req, res) => {
     bot.processUpdate(req.body);

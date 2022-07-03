@@ -28,21 +28,18 @@ class ChadBot {
     }
     ;
     async init() {
-        const options = {
-            webHook: {
-                port: process.env.PORT,
-            }
-        };
         if (process.env.ENV === 'dev') {
+            console.log('in init() dev');
             this.chadBot = new node_telegram_bot_api_1.default(process.env.BOT_TOKEN_DEV);
-            this.chadBot.on('message', (msg) => {
-                console.log('test');
-                console.log(this.chadBot);
-                this.chadBot?.sendMessage(msg.chat.id, 'received msg');
-            });
+            // this.chadBot.on('message', (msg) => {
+            //     console.log('test');
+            //     console.log(this.chadBot)
+            //     this.chadBot?.sendMessage(msg.chat.id, 'received msg')
+            // });
         }
         else {
-            this.chadBot = new node_telegram_bot_api_1.default(process.env.BOT_TOKEN, options);
+            console.log('inside init()');
+            this.chadBot = new node_telegram_bot_api_1.default(process.env.BOT_TOKEN);
             this.chadBot.setWebHook(`https://mojojojoz.herokuapp.com:443/bot/${process.env.BOT_TOKEN}`);
         }
     }

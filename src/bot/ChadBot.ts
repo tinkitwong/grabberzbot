@@ -11,21 +11,18 @@ export class ChadBot {
     };
     
     private async init() {
-        const options = {
-            webHook: {
-                port : process.env.PORT as unknown as number,
-            }
-        }
         if (process.env.ENV === 'dev') { 
+                console.log('in init() dev')
                 this.chadBot = new TelegramBot(process.env.BOT_TOKEN_DEV as string);
-                this.chadBot.on('message', (msg) => {
-                    console.log('test');
-                    console.log(this.chadBot)
-                    this.chadBot?.sendMessage(msg.chat.id, 'received msg')
-                });
+                // this.chadBot.on('message', (msg) => {
+                //     console.log('test');
+                //     console.log(this.chadBot)
+                //     this.chadBot?.sendMessage(msg.chat.id, 'received msg')
+                // });
             }
             else{
-                this.chadBot = new TelegramBot(process.env.BOT_TOKEN as string, options);
+                console.log('inside init()');
+                this.chadBot = new TelegramBot(process.env.BOT_TOKEN as string);
                 this.chadBot.setWebHook(`https://mojojojoz.herokuapp.com:443/bot/${process.env.BOT_TOKEN}`);
             }
     
