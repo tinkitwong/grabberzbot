@@ -12,7 +12,7 @@ const port = process.env.PORT;
 const bot = new TelegramBot(TOKEN!);
 
 // This informs the Telegram servers of the new webhook.w
-bot.setWebHook(`${url}/bot${TOKEN}`);
+bot.setWebHook(`bot${TOKEN}`);
 
 const app = express();
 

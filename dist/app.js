@@ -13,7 +13,7 @@ const port = process.env.PORT;
 // No need to pass any parameters as we will handle the updates with Express
 const bot = new node_telegram_bot_api_1.default(TOKEN);
 // This informs the Telegram servers of the new webhook.w
-bot.setWebHook(`${url}/bot${TOKEN}`);
+bot.setWebHook(`bot${TOKEN}`);
 const app = (0, express_1.default)();
 // parse the updates to JSON
 app.use(express_1.default.json());
