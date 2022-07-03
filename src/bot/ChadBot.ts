@@ -11,14 +11,8 @@ export class ChadBot {
     };
     
     private async init() {
-        if (process.env.ENV === 'dev') { 
-                console.log('in init() dev')
-                this.chadBot = new TelegramBot(process.env.BOT_TOKEN_DEV as string);
-                // this.chadBot.on('message', (msg) => {
-                //     console.log('test');
-                //     console.log(this.chadBot)
-                //     this.chadBot?.sendMessage(msg.chat.id, 'received msg')
-                // });
+        if (process.env.ENV === 'dev') {
+                this.chadBot = new TelegramBot(process.env.BOT_TOKEN_DEV as string, { polling: true });
             }
             else {
                 this.chadBot = new TelegramBot(process.env.BOT_TOKEN as string, {
@@ -27,7 +21,6 @@ export class ChadBot {
                     }
                 });
                 this.chadBot.setWebHook(`https://mojojojoz.herokuapp.com:443/bot/${process.env.BOT_TOKEN}`);
-
             }
     
     };

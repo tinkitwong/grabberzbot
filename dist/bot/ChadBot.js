@@ -29,13 +29,7 @@ class ChadBot {
     ;
     async init() {
         if (process.env.ENV === 'dev') {
-            console.log('in init() dev');
-            this.chadBot = new node_telegram_bot_api_1.default(process.env.BOT_TOKEN_DEV);
-            // this.chadBot.on('message', (msg) => {
-            //     console.log('test');
-            //     console.log(this.chadBot)
-            //     this.chadBot?.sendMessage(msg.chat.id, 'received msg')
-            // });
+            this.chadBot = new node_telegram_bot_api_1.default(process.env.BOT_TOKEN_DEV, { polling: true });
         }
         else {
             this.chadBot = new node_telegram_bot_api_1.default(process.env.BOT_TOKEN, {

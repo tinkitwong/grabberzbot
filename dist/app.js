@@ -20,4 +20,8 @@ const bot = new ChadBot_1.ChadBot().getBot();
 bot.on('message', msg => {
     bot.sendMessage(msg.chat.id, 'I am alive!');
 });
+bot.onText(/^hello mojojojo$/i, (msg) => {
+    console.log('tests');
+    bot.sendMessage(msg.chat.id, `hi ${msg.from?.username}`);
+});
 //# sourceMappingURL=app.js.map
